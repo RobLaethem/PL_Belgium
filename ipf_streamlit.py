@@ -27,5 +27,5 @@ df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].d
 #drop duplicate entries for the same name in one weightclass, keep the best result per lifter
 df_filtered = df_filtered0.sort_values('TotalKg', ascending=False).drop_duplicates('Name')
 #calculate the percentile of the input total compared to the filtered dataframe
-percentile = (df_filtered['TotalKg'] < total_input).mean() * 100
+percentile = (df_filtered['TotalKg'] <= total_input).mean() * 100
 st.write(f"The percentile of a total of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")

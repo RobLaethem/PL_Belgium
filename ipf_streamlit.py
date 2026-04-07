@@ -14,7 +14,8 @@ df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 weight_classes = df['WeightClassKg'].unique()
 selected_weight_class = st.selectbox("Select weight class", weight_classes)
 #make a dropdown to select a year
-years = df['Date'].dt.year.unique()
+#years = df['Date'].dt.year.unique()
+years = [2024,2025]
 selected_year = st.selectbox("Select year", years)
 #make a textbox to input a total (ensure it is a number, else ask again)
 total_input = st.text_input("Enter total in kg")

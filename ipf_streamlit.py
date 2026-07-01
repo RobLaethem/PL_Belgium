@@ -1,14 +1,16 @@
 import pandas as pd
 import streamlit as st
-import numpy as np
 
 st.title("Belgian powerlifting percentiles")
 # read the csv file that is in the same repo as this script, and is called ipf2026_belgium_raw.csv
 df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-8-sig')
 # convert Date to datetime
 df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
+# Fill NaN with a placeholder string
+df['WeightClassKg'] = df['WeightClassKg'].fillna('Unknown')
 
-
+#make a dropdown to select 'squat', 'bench', 'deadlift' or 'total'
+lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
 #make a dropdown to select weightclass
 weight_classes = ["52","57","63","69","76","84","84+","59","66","74","83","93","105","120","120+"]
 selected_weight_class = st.selectbox("Select weight class", weight_classes)
@@ -25,14 +27,24 @@ except ValueError:
 
 # filter the dataframe for the selected weight class and year
 df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
-#drop duplicate entries for the same name in one weightclass, keep the best result per lifter
-df_filtered = df_filtered0.sort_values('TotalKg', ascending=False).drop_duplicates('Name')
-#calculate the percentile of the input total compared to the filtered dataframe
+#make string to filter the dataframe for the selected lift, by adding 'Kg' to the end of the lift name, and using that as the column name
+#if the lift is 'Total', then use 'TotalKg' as the column name, else add "Best3" before it
+if lift == "Total":
+    lift_selection = "TotalKg"
+else:
+    lift_selection = "Best3" + lift + "Kg"
 
-totals = df_filtered['TotalKg'].astype(float).dropna().values
+#drop duplicate entries for the same name in one weightclass, keep the best result per lifter
+df_filtered = df_filtered0.sort_values(lift_selection, ascending=False).drop_duplicates('Name')
+
+#calculate the percentile of the input total compared to the filtered dataframe
+import numpy as np
+
+totals = df_filtered[lift_selection].astype(float).dropna().values
 if float(total_input) >= np.nanmax(totals):
     percentile = 100.0
 else:
     totals_with_input = np.append(totals, float(total_input))
     percentile = (totals_with_input <= float(total_input)).mean() * 100
-st.write(f"The percentile of a total of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
+print(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
+st.write(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")

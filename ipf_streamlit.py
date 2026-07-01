@@ -18,7 +18,7 @@ selected_weight_class = st.selectbox("Select weight class", weight_classes)
 years = [2024,2025]
 selected_year = st.selectbox("Select year", years)
 #make a textbox to input a total (ensure it is a number, else ask again)
-total_input = st.text_input("Enter total in kg")
+total_input = st.text_input("Enter weight in kg")
 try:
     total_input = float(total_input)
 except ValueError:

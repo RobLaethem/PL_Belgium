@@ -29,31 +29,32 @@ with st.sidebar:
     except ValueError:
         st.warning("Please enter a valid number for this lift")
         st.stop()
-#main page
-# filter the dataframe for the selected weight class and year
-df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
-#make string to filter the dataframe for the selected lift, by adding 'Kg' to the end of the lift name, and using that as the column name
-#if the lift is 'Total', then use 'TotalKg' as the column name, else add "Best3" before it
-if lift == "Total":
-    lift_selection = "TotalKg"
-else:
-    lift_selection = "Best3" + lift + "Kg"
 
-#drop duplicate entries for the same name in one weightclass, keep the best result per lifter
-df_filtered = df_filtered0.sort_values(lift_selection, ascending=False).drop_duplicates('Name')
+    # filter the dataframe for the selected weight class and year
+    df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
+    #make string to filter the dataframe for the selected lift, by adding 'Kg' to the end of the lift name, and using that as the column name
+    #if the lift is 'Total', then use 'TotalKg' as the column name, else add "Best3" before it
+    if lift == "Total":
+        lift_selection = "TotalKg"
+    else:
+        lift_selection = "Best3" + lift + "Kg"
+    
+    #drop duplicate entries for the same name in one weightclass, keep the best result per lifter
+    df_filtered = df_filtered0.sort_values(lift_selection, ascending=False).drop_duplicates('Name')
+    
+    #calculate the percentile of the input total compared to the filtered dataframe
+    import numpy as np
+    
+    totals = df_filtered[lift_selection].astype(float).dropna().values
+    if float(total_input) >= np.nanmax(totals):
+        percentile = 100.0
+    else:
+        totals_with_input = np.append(totals, float(total_input))
+        percentile = (totals_with_input <= float(total_input)).mean() * 100
+    print(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
+    st.write(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
 
-#calculate the percentile of the input total compared to the filtered dataframe
-import numpy as np
-
-totals = df_filtered[lift_selection].astype(float).dropna().values
-if float(total_input) >= np.nanmax(totals):
-    percentile = 100.0
-else:
-    totals_with_input = np.append(totals, float(total_input))
-    percentile = (totals_with_input <= float(total_input)).mean() * 100
-print(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
-st.write(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
-
+#main
 # make a histogram of the filtered dataframe for the selected lift, with the input total as a vertical line
 import matplotlib.pyplot as plt
 

@@ -85,7 +85,7 @@ max_edge = binrange * ((max_total // binrange) + 1)
 # Create bin edges at every 10kg
 bins = np.arange(min_edge, max_edge + binrange, binrange)
 # create a plot containing a histogram of the TotalKg column showing how many lifters lifted a certain total weight
-fig, ax = plt.figure(figsize=(6,3))
+fig, ax = plt.subplots(figsize=(6,3))
 ax.hist(df_class[lift_selection], bins=bins, edgecolor='black')
 # add a vertical line in different colors for the mean and median, p10,and p90 add them in a legend
 ax.axvline(p10, color='green', linestyle='dashed', linewidth=1, label=f'10th Percentile: {p10:.2f}')

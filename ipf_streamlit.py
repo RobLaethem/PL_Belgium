@@ -51,8 +51,8 @@ with st.sidebar:
     else:
         totals_with_input = np.append(totals, float(total_input))
         percentile = (totals_with_input <= float(total_input)).mean() * 100
-    print(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
-    st.write(f"The percentile of a {lift_selection} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
+    print(f"The percentile of a {lift} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
+    st.write(f"The percentile of a {lift} of {total_input} kg in the {selected_weight_class} kg class for the year {selected_year} is: {percentile:.2f}%")
 
 #main
 # make a histogram of the filtered dataframe for the selected lift, with the input total as a vertical line

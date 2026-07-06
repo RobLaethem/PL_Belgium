@@ -20,14 +20,16 @@ df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 # Fill NaN with a placeholder string
 df['WeightClassKg'] = df['WeightClassKg'].fillna('Unknown')
 
-#make a dropdown to select 'squat', 'bench', 'deadlift' or 'total'
-lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
-#make a dropdown to select weightclass
 weight_classes = ["52","57","63","69","76","84","84+","59","66","74","83","93","105","120","120+"]
 selected_weight_class = st.selectbox("Select weight class", weight_classes)
-#make a dropdown to select a year
 years = [2024,2025]
-selected_year = st.selectbox("Select year", years)
+col1, col2, col3 = st.columns(3)
+with col1:
+    lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
+with col2:
+    selected_weight_class = st.selectbox("Select weight class", weight_classes)
+with col3:
+    selected_year = st.selectbox("Select year", years)
 #make a textbox to input a total (ensure it is a number, else ask again)
 total_input = st.text_input("Enter weight in kg")
 try:

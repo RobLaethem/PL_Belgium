@@ -2,13 +2,13 @@ import pandas as pd
 import streamlit as st
 
 st.title("Belgian powerlifting percentiles")
-# Add custom CSS to scale down UI elements
 st.markdown(
     """
     <style>
-    .css-18e3th9 {padding: 0.5rem 0.5rem;}
-    .css-1d391kg {font-size: 0.9rem;}
-    .stSelectbox label, .stTextInput label {font-size: 0.9rem;}
+    /* Reduce font size for all elements in the main container */
+    .main { font-size: 0.9em; }
+    /* Reduce padding for Streamlit widgets */
+    div[data-testid="stSidebar"], div[data-testid="stVerticalBlock"] { padding: 0.5rem 0.5rem; }
     </style>
     """,
     unsafe_allow_html=True

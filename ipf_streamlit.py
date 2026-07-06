@@ -2,6 +2,17 @@ import pandas as pd
 import streamlit as st
 
 st.title("Belgian powerlifting percentiles")
+# Add custom CSS to scale down UI elements
+st.markdown(
+    """
+    <style>
+    .css-18e3th9 {padding: 0.5rem 0.5rem;}
+    .css-1d391kg {font-size: 0.9rem;}
+    .stSelectbox label, .stTextInput label {font-size: 0.9rem;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # read the csv file that is in the same repo as this script, and is called ipf2026_belgium_raw.csv
 df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-8-sig')
 # convert Date to datetime
@@ -24,6 +35,12 @@ try:
 except ValueError:
     st.warning("Please enter a valid number for this lift")
     st.stop()
+
+"""#TESTCASE: 120+ kg class, year 2024, total 500 kg, lift Total (result 50%)
+lift = "Total"
+selected_weight_class = "120+"
+selected_year = 2024
+total_input = 500"""
 
 # filter the dataframe for the selected weight class and year
 df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
@@ -80,15 +97,15 @@ max_edge = binrange * ((max_total // binrange) + 1)
 # Create bin edges at every 10kg
 bins = np.arange(min_edge, max_edge + binrange, binrange)
 # create a plot containing a histogram of the TotalKg column showing how many lifters lifted a certain total weight
-plt.figure(figsize=(10,6))
+plt.figure(figsize=(7,4))
 plt.hist(df_class[lift_selection], bins=bins, edgecolor='black')
 # add a vertical line in different colors for the mean and median, p10,and p90 add them in a legend
 plt.axvline(p10, color='green', linestyle='dashed', linewidth=1, label=f'10th Percentile: {p10:.2f}')
 plt.axvline(mean, color='orange', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
 plt.axvline(median, color='blue', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
 plt.axvline(p90, color='red', linestyle='dashed', linewidth=1, label=f'90th Percentile: {p90:.2f}')
-plt.legend(fontsize=12)
-plt.xticks(fontsize=12)
+plt.legend(fontsize=10)
+plt.xticks(fontsize=10)
 if selected_weight_class ==  '84':
     selected_weight_class = '-84'
 if selected_weight_class ==  '120':

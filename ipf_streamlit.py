@@ -99,5 +99,5 @@ if selected_weight_class ==  '84':
     selected_weight_class = '-84'
 if selected_weight_class ==  '120':
     selected_weight_class = '-120'
-ax.set_title(f"Raw Total for {selected_weight_class} in {selected_year} (n={n})",fontsize=12)
+ax.set_title(f"Raw {lift} for {selected_weight_class} in {selected_year} (n={n})",fontsize=12)
 st.pyplot (fig)

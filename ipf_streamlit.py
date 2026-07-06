@@ -20,29 +20,22 @@ df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 # Fill NaN with a placeholder string
 df['WeightClassKg'] = df['WeightClassKg'].fillna('Unknown')
 
+#make a dropdown to select 'squat', 'bench', 'deadlift' or 'total'
+lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
+#make a dropdown to select weightclass
 weight_classes = ["52","57","63","69","76","84","84+","59","66","74","83","93","105","120","120+"]
 selected_weight_class = st.selectbox("Select weight class", weight_classes)
+#make a dropdown to select a year
 years = [2024,2025]
-col1, col2, col3 = st.columns(3)
-with col1:
-    lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
-with col2:
-    selected_weight_class = st.selectbox("Select weight class", weight_classes)
-with col3:
-    selected_year = st.selectbox("Select year", years)
+selected_year = st.selectbox("Select year", years)
 #make a textbox to input a total (ensure it is a number, else ask again)
 total_input = st.text_input("Enter weight in kg")
+
 try:
     total_input = float(total_input)
 except ValueError:
     st.warning("Please enter a valid number for this lift")
     st.stop()
-
-"""#TESTCASE: 120+ kg class, year 2024, total 500 kg, lift Total (result 50%)
-lift = "Total"
-selected_weight_class = "120+"
-selected_year = 2024
-total_input = 500"""
 
 # filter the dataframe for the selected weight class and year
 df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
@@ -99,15 +92,15 @@ max_edge = binrange * ((max_total // binrange) + 1)
 # Create bin edges at every 10kg
 bins = np.arange(min_edge, max_edge + binrange, binrange)
 # create a plot containing a histogram of the TotalKg column showing how many lifters lifted a certain total weight
-plt.figure(figsize=(7,4))
+plt.figure(figsize=(6,3))
 plt.hist(df_class[lift_selection], bins=bins, edgecolor='black')
 # add a vertical line in different colors for the mean and median, p10,and p90 add them in a legend
 plt.axvline(p10, color='green', linestyle='dashed', linewidth=1, label=f'10th Percentile: {p10:.2f}')
 plt.axvline(mean, color='orange', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
 plt.axvline(median, color='blue', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
 plt.axvline(p90, color='red', linestyle='dashed', linewidth=1, label=f'90th Percentile: {p90:.2f}')
-plt.legend(fontsize=10)
-plt.xticks(fontsize=10)
+plt.legend(fontsize=9)
+plt.xticks(fontsize=9)
 if selected_weight_class ==  '84':
     selected_weight_class = '-84'
 if selected_weight_class ==  '120':

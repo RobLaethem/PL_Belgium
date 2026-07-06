@@ -1,17 +1,9 @@
 import pandas as pd
 import streamlit as st
 
-st.title("Belgian powerlifting percentiles")
-st.markdown(
-    """
-    <style>
-    /* Reduce font size for all elements in the main container */
-    .main { font-size: 0.9em; }
-    /* Reduce padding for Streamlit widgets */
-    div[data-testid="stSidebar"], div[data-testid="stVerticalBlock"] { padding: 0.5rem 0.5rem; }
-    </style>
-    """,
-    unsafe_allow_html=True
+st.set_page_config(
+    page_title="Belgian powerlifting percentiles",
+    layout="wide"
 )
 # read the csv file that is in the same repo as this script, and is called ipf2026_belgium_raw.csv
 df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-8-sig')

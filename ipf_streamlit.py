@@ -25,12 +25,6 @@ except ValueError:
     st.warning("Please enter a valid number for this lift")
     st.stop()
 
-#TESTCASE: 120+ kg class, year 2024, total 500 kg, lift Total (result 50%)
-lift = "Total"
-selected_weight_class = "120+"
-selected_year = 2024
-total_input = 500
-
 # filter the dataframe for the selected weight class and year
 df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
 #make string to filter the dataframe for the selected lift, by adding 'Kg' to the end of the lift name, and using that as the column name

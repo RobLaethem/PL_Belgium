@@ -85,18 +85,18 @@ max_edge = binrange * ((max_total // binrange) + 1)
 # Create bin edges at every 10kg
 bins = np.arange(min_edge, max_edge + binrange, binrange)
 # create a plot containing a histogram of the TotalKg column showing how many lifters lifted a certain total weight
-plt.figure(figsize=(6,3))
-plt.hist(df_class[lift_selection], bins=bins, edgecolor='black')
+fig, ax = plt.figure(figsize=(6,3))
+ax.hist(df_class[lift_selection], bins=bins, edgecolor='black')
 # add a vertical line in different colors for the mean and median, p10,and p90 add them in a legend
-plt.axvline(p10, color='green', linestyle='dashed', linewidth=1, label=f'10th Percentile: {p10:.2f}')
-plt.axvline(mean, color='orange', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
-plt.axvline(median, color='blue', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
-plt.axvline(p90, color='red', linestyle='dashed', linewidth=1, label=f'90th Percentile: {p90:.2f}')
-plt.legend(fontsize=9)
-plt.xticks(fontsize=9)
+ax.axvline(p10, color='green', linestyle='dashed', linewidth=1, label=f'10th Percentile: {p10:.2f}')
+ax.axvline(mean, color='orange', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
+ax.axvline(median, color='blue', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
+ax.axvline(p90, color='red', linestyle='dashed', linewidth=1, label=f'90th Percentile: {p90:.2f}')
+ax.legend(fontsize=9)
+ax.xticks(fontsize=9)
 if selected_weight_class ==  '84':
     selected_weight_class = '-84'
 if selected_weight_class ==  '120':
     selected_weight_class = '-120'
-plt.title(f"Raw Total for {selected_weight_class} in {selected_year} (n={n})")
-st.pyplot (plt)
+ax.set_title(f"Raw Total for {selected_weight_class} in {selected_year} (n={n})")
+st.pyplot (fig)

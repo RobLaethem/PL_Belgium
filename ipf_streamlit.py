@@ -11,24 +11,25 @@ df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-
 df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 # Fill NaN with a placeholder string
 df['WeightClassKg'] = df['WeightClassKg'].fillna('Unknown')
+#sidebar
+with st.sidebar:
+    #make a dropdown to select 'squat', 'bench', 'deadlift' or 'total'
+    lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
+    #make a dropdown to select weightclass
+    weight_classes = ["52","57","63","69","76","84","84+","59","66","74","83","93","105","120","120+"]
+    selected_weight_class = st.selectbox("Select weight class", weight_classes)
+    #make a dropdown to select a year
+    years = [2024,2025]
+    selected_year = st.selectbox("Select year", years)
+    #make a textbox to input a total (ensure it is a number, else ask again)
+    total_input = st.text_input("Enter weight in kg")
 
-#make a dropdown to select 'squat', 'bench', 'deadlift' or 'total'
-lift = st.selectbox("Select lift", ["Squat", "Bench", "Deadlift", "Total"])
-#make a dropdown to select weightclass
-weight_classes = ["52","57","63","69","76","84","84+","59","66","74","83","93","105","120","120+"]
-selected_weight_class = st.selectbox("Select weight class", weight_classes)
-#make a dropdown to select a year
-years = [2024,2025]
-selected_year = st.selectbox("Select year", years)
-#make a textbox to input a total (ensure it is a number, else ask again)
-total_input = st.text_input("Enter weight in kg")
-
-try:
-    total_input = float(total_input)
-except ValueError:
-    st.warning("Please enter a valid number for this lift")
-    st.stop()
-
+    try:
+        total_input = float(total_input)
+    except ValueError:
+        st.warning("Please enter a valid number for this lift")
+        st.stop()
+#main page
 # filter the dataframe for the selected weight class and year
 df_filtered0 = df[(df['WeightClassKg'] == selected_weight_class) & (df['Date'].dt.year == selected_year)]
 #make string to filter the dataframe for the selected lift, by adding 'Kg' to the end of the lift name, and using that as the column name

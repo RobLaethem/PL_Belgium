@@ -5,8 +5,12 @@ st.set_page_config(
     page_title="Belgian powerlifting percentiles",
     layout="wide"
 )
+@st.cache_data
+def load_data():
+    df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-8-sig')
+    return df
 # read the csv file that is in the same repo as this script, and is called ipf2026_belgium_raw.csv
-df = pd.read_csv("ipf2026_belgium_raw.csv", sep=',', decimal='.', encoding='utf-8-sig')
+df = load_data()
 # convert Date to datetime
 df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 # Fill NaN with a placeholder string

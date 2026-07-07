@@ -99,6 +99,8 @@ ax.axvline(mean, color='orange', linestyle='dashed', linewidth=1, label=f'Mean: 
 ax.axvline(median, color='blue', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
 ax.axvline(p90, color='red', linestyle='dashed', linewidth=1, label=f'90th Percentile: {p90:.2f}')
 ax.legend(fontsize=9)
+# set x-axis ticks equal to the bins
+ax.set_xticks(bins)
 ax.tick_params(axis='x', labelsize=9)
 if selected_weight_class == '84':
     selected_weight_class = '-84'
